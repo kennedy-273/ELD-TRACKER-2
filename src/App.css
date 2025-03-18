@@ -311,3 +311,55 @@ input[type="number"] {
     min-width: auto;
   }
 }
+/* Add these styles to your App.css file */
+
+.input-with-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: #f5f5f5;
+}
+
+.suggestion-item:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.suggestion-item.loading {
+  text-align: center;
+  color: #888;
+  cursor: default;
+}
+
+.suggestion-item.no-results {
+  text-align: center;
+  color: #888;
+  cursor: default;
+}
+
+input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
