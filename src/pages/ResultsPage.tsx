@@ -21,23 +21,27 @@ const ResultsPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const tripDetails = location.state as TripDetails || {};
- 
+
   const [routeDetails, setRouteDetails] = useState({
-    totalDistance: 'Calculating...',
-    drivingTime: 'Calculating...',
+    totalDistance: 'Calculating...', // String for display
+    drivingTime: 'Calculating...',   // String for display
     requiredStops: 'Calculating...',
-    totalTripTime: 'Calculating...'
+    totalTripTime: 'Calculating...',
+  });
+
+  // Add numeric state for passing to LogSheetComponent
+  const [numericRouteDetails, setNumericRouteDetails] = useState({
+    totalDistance: 0, // Numeric value in miles
+    drivingTime: 0,   // Numeric value in hours
   });
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filter out any undefined or empty locations
   const route = [tripDetails.currentLocation, tripDetails.pickupLocation, tripDetails.dropoffLocation].filter(Boolean);
   const stops = [tripDetails.pickupLocation].filter(Boolean);
 
   useEffect(() => {
-    // Check if we have valid route data from navigation state
     if (!tripDetails.currentLocation || !tripDetails.dropoffLocation) {
       setError('Missing route information. Please return to the previous page.');
       setIsLoading(false);
@@ -49,56 +53,29 @@ const ResultsPage: React.FC = () => {
       setError(null);
 
       try {
-        // If we already have coordinates from the form, use them directly
         const locations = [
-          {
-            name: tripDetails.currentLocation,
-            lat: tripDetails.currentCoordinates?.lat,
-            lng: tripDetails.currentCoordinates?.lng
-          },
-          {
-            name: tripDetails.pickupLocation,
-            lat: tripDetails.pickupCoordinates?.lat,
-            lng: tripDetails.pickupCoordinates?.lng
-          },
-          {
-            name: tripDetails.dropoffLocation,
-            lat: tripDetails.dropoffCoordinates?.lat,
-            lng: tripDetails.dropoffCoordinates?.lng
-          }
+          { name: tripDetails.currentLocation, lat: tripDetails.currentCoordinates?.lat, lng: tripDetails.currentCoordinates?.lng },
+          { name: tripDetails.pickupLocation, lat: tripDetails.pickupCoordinates?.lat, lng: tripDetails.pickupCoordinates?.lng },
+          { name: tripDetails.dropoffLocation, lat: tripDetails.dropoffCoordinates?.lat, lng: tripDetails.dropoffCoordinates?.lng },
         ].filter(loc => loc.name && loc.lat && loc.lng);
-       
-        // Calculate route using OSRM
+
         if (locations.length >= 2) {
-          const coordsString = locations
-            .map(loc => `${loc.lng},${loc.lat}`)
-            .join(';');
-         
+          const coordsString = locations.map(loc => `${loc.lng},${loc.lat}`).join(';');
           const routeResponse = await axios.get(
             `https://router.project-osrm.org/route/v1/driving/${coordsString}?overview=full&geometries=geojson`
           );
-         
-          if (routeResponse.data &&
-              routeResponse.data.routes &&
-              routeResponse.data.routes[0]) {
-           
-            // Get distance in meters and duration in seconds
+
+          if (routeResponse.data && routeResponse.data.routes && routeResponse.data.routes[0]) {
             const distance = routeResponse.data.routes[0].distance; // in meters
             const duration = routeResponse.data.routes[0].duration; // in seconds
-           
-            // Convert distance from meters to miles
-            const distanceMiles = Math.round(distance * 0.000621371);
-           
-            // Convert duration from seconds to hours and minutes
-            const hours = Math.floor(duration / 3600);
-            const minutes = Math.round((duration % 3600) / 60);
-           
-            // Calculate required stops based on FMCSA HOS rules (11-hour driving limit)
-            const drivingHours = duration / 3600;
-            const requiredStops = Math.max(1, Math.ceil(drivingHours / 11)); // At least one stop
-           
-            // Calculate total trip time including mandatory rest periods (10 hours per stop)
-            const restHours = (requiredStops - 1) * 10; // No rest period for last stop
+
+            const distanceMiles = Math.round(distance * 0.000621371); // Convert to miles
+            const drivingHours = duration / 3600; // Convert to hours
+            const hours = Math.floor(drivingHours);
+            const minutes = Math.round((drivingHours - hours) * 60);
+
+            const requiredStops = Math.max(1, Math.ceil(drivingHours / 11));
+            const restHours = (requiredStops - 1) * 10;
             const totalTripHours = drivingHours + restHours;
             const days = Math.floor(totalTripHours / 24);
             const remainingHours = Math.round(totalTripHours % 24);
@@ -107,9 +84,13 @@ const ResultsPage: React.FC = () => {
               totalDistance: `${distanceMiles.toLocaleString()} miles`,
               drivingTime: `${hours}h ${minutes}m`,
               requiredStops: requiredStops.toString(),
-              totalTripTime: days > 0
-                ? `${days} days, ${remainingHours}h`
-                : `${remainingHours}h`
+              totalTripTime: days > 0 ? `${days} days, ${remainingHours}h` : `${remainingHours}h`,
+            });
+
+            // Set numeric values for LogSheetComponent
+            setNumericRouteDetails({
+              totalDistance: distanceMiles,
+              drivingTime: drivingHours,
             });
           } else {
             throw new Error('Failed to calculate route: Invalid response from routing service');
@@ -123,8 +104,9 @@ const ResultsPage: React.FC = () => {
           totalDistance: 'N/A',
           drivingTime: 'N/A',
           requiredStops: 'N/A',
-          totalTripTime: 'N/A'
+          totalTripTime: 'N/A',
         });
+        setNumericRouteDetails({ totalDistance: 0, drivingTime: 0 });
       } finally {
         setIsLoading(false);
       }
@@ -133,7 +115,6 @@ const ResultsPage: React.FC = () => {
     calculateRouteWithCoordinates();
   }, [tripDetails]);
 
-  // Handle redirection if no valid state
   if (!tripDetails.currentLocation && !isLoading) {
     return (
       <div style={{ padding: '20px' }}>
@@ -168,44 +149,33 @@ const ResultsPage: React.FC = () => {
         ) : (
           <>
             <MapComponent route={route} stops={stops} />
-           
             <Divider />
-           
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12} md={6}>
                 <Card size="small" title="Total Distance">
-                  <div style={{ textAlign: 'center', fontSize: '16px' }}>
-                    {routeDetails.totalDistance}
-                  </div>
+                  <div style={{ textAlign: 'center', fontSize: '16px' }}>{routeDetails.totalDistance}</div>
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={6}>
                 <Card size="small" title="Driving Time">
-                  <div style={{ textAlign: 'center', fontSize: '16px' }}>
-                    {routeDetails.drivingTime}
-                  </div>
+                  <div style={{ textAlign: 'center', fontSize: '16px' }}>{routeDetails.drivingTime}</div>
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={6}>
                 <Card size="small" title="Required Stops">
-                  <div style={{ textAlign: 'center', fontSize: '16px' }}>
-                    {routeDetails.requiredStops}
-                  </div>
+                  <div style={{ textAlign: 'center', fontSize: '16px' }}>{routeDetails.requiredStops}</div>
                 </Card>
               </Col>
               <Col xs={24} sm={12} md={6}>
                 <Card size="small" title="Total Trip Time">
-                  <div style={{ textAlign: 'center', fontSize: '16px' }}>
-                    {routeDetails.totalTripTime}
-                  </div>
+                  <div style={{ textAlign: 'center', fontSize: '16px' }}>{routeDetails.totalTripTime}</div>
                 </Card>
               </Col>
             </Row>
           </>
         )}
       </Card>
-     
-      {/* Only render LogSheetComponent if we have valid route data */}
+
       {tripDetails.currentLocation && tripDetails.dropoffLocation && (
         <LogSheetComponent
           tripDetails={{
@@ -215,7 +185,9 @@ const ResultsPage: React.FC = () => {
             currentCycle: tripDetails.currentCycle || 'Not specified',
             currentCoordinates: tripDetails.currentCoordinates,
             pickupCoordinates: tripDetails.pickupCoordinates,
-            dropoffCoordinates: tripDetails.dropoffCoordinates
+            dropoffCoordinates: tripDetails.dropoffCoordinates,
+            totalDistance: numericRouteDetails.totalDistance,
+            drivingTime: numericRouteDetails.drivingTime,
           }}
         />
       )}

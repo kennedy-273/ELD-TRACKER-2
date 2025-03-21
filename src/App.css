@@ -363,3 +363,341 @@ input::placeholder {
   color: #aaa;
   font-style: italic;
 }
+/* Main Container Styles */
+.trip-planner-container {
+  max-width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4ecf7 100%);
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-row {
+  margin-bottom: 32px;
+}
+
+.page-title {
+  color: #1d3557;
+  text-align: center;
+  font-weight: 600;
+  position: relative;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #1d3557, #457b9d);
+  border-radius: 2px;
+}
+
+/* Layout Structure */
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.form-column {
+  flex: 0 0 60%;
+  max-width: 60%;
+}
+
+.map-column {
+  flex: 0 0 40%;
+  max-width: 40%;
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 180px);
+  background-image: url('/api/placeholder/600/400');
+  background-size: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-placeholder {
+  background-color: rgba(29, 53, 87, 0.8);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Card and Form Styles */
+.trip-form-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  margin-bottom: 40px;
+  overflow: hidden;
+  border: none;
+  height: 100%;
+}
+
+.form-steps {
+  margin-bottom: 30px;
+  padding: 20px 16px;
+  background: rgba(245, 247, 250, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.trip-form {
+  padding: 0 16px 16px;
+}
+
+/* Step Container Styles */
+.step-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.step-content {
+  flex-grow: 1;
+  margin-bottom: 24px;
+}
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Input Styles */
+.location-input-row {
+  margin-top: 24px;
+}
+
+.location-input {
+  border-radius: 8px;
+  transition: all 0.3s;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.location-input:hover {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+  background: rgba(255, 255, 255, 1);
+}
+
+.location-input:focus, 
+.location-input-focused {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  background: rgba(255, 255, 255, 1);
+}
+
+.location-icon {
+  color: #457b9d;
+}
+
+.coord-input {
+  background-color: rgba(245, 247, 250, 0.5);
+  color: #666;
+  font-size: 12px;
+}
+
+/* Suggestions Card */
+.suggestions-card {
+  margin-top: 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.suggestion-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.suggestion-item:hover {
+  background-color: rgba(240, 247, 255, 0.8);
+}
+
+.suggestion-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.suggestion-coords {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Button Styles */
+.next-button, .submit-button {
+  background: linear-gradient(90deg, #1d3557, #457b9d);
+  border: none;
+  border-radius: 8px;
+  padding: 0 24px;
+  height: 48px;
+  box-shadow: 0 4px 12px rgba(69, 123, 157, 0.2);
+  transition: all 0.3s;
+}
+
+.next-button:hover, .submit-button:hover {
+  background: linear-gradient(90deg, #264973, #5096be);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(69, 123, 157, 0.3);
+}
+
+.prev-button {
+  border-radius: 8px;
+  padding: 0 24px;
+  height: 48px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.prev-button:hover {
+  border-color: #1d3557;
+  color: #1d3557;
+}
+
+/* Hours Input and Transport Options */
+.hours-input {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.transport-options {
+  display: flex;
+  margin-top: 8px;
+  gap: 12px;
+}
+
+.transport-option {
+  flex: 1;
+  text-align: center;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s;
+  border-radius: 8px;
+  background: rgba(245, 247, 250, 0.5);
+}
+
+.transport-option:hover {
+  background-color: rgba(240, 247, 255, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.transport-option.ant-radio-button-wrapper-checked {
+  background: rgba(29, 53, 87, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.transport-option-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #1d3557;
+}
+
+/* Summary Section */
+.summary-section {
+  background-color: rgba(245, 247, 250, 0.7);
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.summary-item {
+  display: flex;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.summary-item strong {
+  width: 140px;
+  color: #1d3557;
+}
+
+/* Footer */
+.app-footer {
+  text-align: center;
+  padding: 24px 0;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .form-column,
+  .map-column {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .map-column {
+    height: 300px;
+    position: relative;
+    top: 0;
+    order: -1;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .trip-planner-container {
+    padding: 16px;
+  }
+  
+  .step-actions {
+    padding: 16px 0;
+  }
+  
+  .page-title::after {
+    width: 60px;
+  }
+  
+  .summary-item {
+    flex-direction: column;
+  }
+  
+  .transport-options {
+    flex-direction: column;
+  }
+  
+  .transport-option {
+    margin-bottom: 8px;
+  }
+}
