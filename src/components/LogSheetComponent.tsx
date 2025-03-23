@@ -384,7 +384,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
           <Row gutter={[16, 16]}>
             <Col xs={24} md={8}><Form layout="vertical"><Form.Item label="Date" style={{ marginBottom: '8px' }}><Input value={`${currentDate.getMonth() + 1}/${currentDate.getDate() + (day - 1)}/${currentDate.getFullYear()}`} readOnly style={{ borderRadius: '6px' }} /></Form.Item></Form></Col>
             <Col xs={24} md={8}><Form layout="vertical"><Form.Item label="Total Miles Driving Today" style={{ marginBottom: '8px' }}><Input value={day === 1 ? totalDistance.toString() : (totalDistance * (drivingTime - totalHours.driving) / drivingTime).toString()} readOnly style={{ borderRadius: '6px' }} /></Form.Item></Form></Col>
-            <Col xs={24} md={8}><Form layout="vertical"><Form.Item label="Driver" style={{ marginBottom: '8px' }}><Input defaultValue="John E. Doe" readOnly style={{ borderRadius: '6px' }} /></Form.Item></Form></Col>
+            <Col xs={24} md={8}><Form layout="vertical"><Form.Item label="Driver" style={{ marginBottom: '8px' }}><Input defaultValue="Kennedy Bernard" readOnly style={{ borderRadius: '6px' }} /></Form.Item></Form></Col>
           </Row>
           <StatusGrid day={day} />
           <DailySummary day={day} />
@@ -412,7 +412,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
           <Col xs={12} sm={6}><Card bodyStyle={{ padding: '12px' }} style={{ boxShadow: 'none', borderRadius: '8px', backgroundColor: 'white' }}><div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>On Duty (Not Driving)</div><div style={{ fontSize: '20px', fontWeight: 'bold', color: '#f97316' }}>{totalHours.onDutyNotDriving.toFixed(1)}h</div></Card></Col>
         </Row>
         <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #dbeafe', display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#4b5563' }}>
-          <div>Driver: John E. Doe</div>
+          <div>Driver: Kennedy Bernard</div>
           <div>Hours of Service Remaining: {(70 - totalHours.driving - totalHours.onDutyNotDriving).toFixed(1)}h</div>
         </div>
       </Card>
