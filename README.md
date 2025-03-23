@@ -1,54 +1,121 @@
-# React + TypeScript + Vite
+```markdown
+# TruckLogger Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of the **TruckLogger** application, a full-stack app built with React and Django. The app allows truck drivers to input trip details and receive route instructions and automatically generated Electronic Logging Device (ELD) logs compliant with Hours of Service (HOS) regulations.
 
-Currently, two official plugins are available:
+## Live Demo
+The app is hosted live on Vercel: [TruckLogger Live Demo]() 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Overview
+The frontend is built with **React** and uses **Ant Design** for a polished UI/UX, **Leaflet** for map rendering, and integrates with a Django backend API. It provides an intuitive interface for drivers to:
+- Enter trip details (current location, pickup location, dropoff location, and current cycle hours).
+- View an interactive map with the route, stops, and rest points.
+- Generate and display daily ELD log sheets for compliance.
 
-## Expanding the ESLint configuration
+### Features
+- **Responsive Design**: Works seamlessly on desktop and mobile devices.
+- **Interactive Map**: Displays the route with custom markers for start, stops, and end using Leaflet and OpenStreetMap.
+- **ELD Log Generation**: Visualizes daily logs with driving, on-duty, and rest periods.
+- **Good Aesthetics**: Modern design with gradients, background images, animations, and consistent branding.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
+- **React**: Frontend framework for building the UI.
+- **Ant Design**: UI library for professional components and styling.
+- **Leaflet**: Open-source map API for route visualization.
+- **Axios**: For making API requests to the Django backend.
+- **Vercel**: Hosting platform for deployment.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+
+## Setup Instructions
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/kennedy-273/ELD-TRACKER-2.git
+   cd ELD-TRACKER-2
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2.  Install Dependencies
+    
+    bash
+    
+    ```bash
+    npm install
+    ```
+    
+    or
+    
+    bash
+    
+    ```bash
+    yarn install
+    ```
+    
+3.  Environment Variables Create a .env file in the root directory and add:
+    
+    env
+    
+    ```text
+    REACT_APP_API_URL=http://localhost:8000/api/  # Backend API URL (update for production)
+    ```
+    
+4.  Run the Development Server
+    
+    bash
+    
+    ```bash
+    npm start
+    ```
+    
+    or
+    
+    bash
+    
+    ```bash
+    yarn start
+    ```
+    
+    The app will run at http://localhost:5174/.
+    
+5.  Build for Production
+    
+    bash
+    
+    ```bash
+    npm run build
+    ```
+    
+    or
+    
+    bash
+    
+    ```bash
+    yarn build
+    ```
+    
+        
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Project Structure
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```text
+trucklogger-frontend/
+├── public/             # Static assets (icons, index.html)
+├── src/                # Source code
+│   ├── components/     # Reusable components (MapComponent, LogSheetComponent, etc.)
+│   ├── pages/          # Page components (HomePage, ResultsPage, etc.)
+│   ├── App.js          # Main app component with routing
+│   ├── index.js        # Entry point
+│   └── App.css         # Global styles
+├── .env                # Environment variables
+├── package.json        # Dependencies and scripts
+└── README.md           # How to set up
 ```
+
+Usage
+
+1.  Visit the homepage to explore features or start a new trip.
+    
+2.  Enter trip details in the "Plan Your Trip" form.
+    
+3.  View the route map and generated ELD logs on the results page.
