@@ -41,9 +41,9 @@ const TripFormComponent: React.FC = () => {
   const [currentCycleUsed, setCurrentCycleUsed] = useState('');
   const [transportType, setTransportType] = useState('truck');
  
-  const [currentSearch, setCurrentSearch] = useState('');
-  const [pickupSearch, setPickupSearch] = useState('');
-  const [dropoffSearch, setDropoffSearch] = useState('');
+  // Removed unused currentSearch state
+  // Removed unused pickupSearch state
+  // Removed unused dropoffSearch state
  
   const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
   const [activeField, setActiveField] = useState<'current' | 'pickup' | 'dropoff' | null>(null);
@@ -79,7 +79,14 @@ const TripFormComponent: React.FC = () => {
       );
      
       if (response.data) {
-        const formattedResults: LocationSuggestion[] = response.data.map((item: any) => ({
+        interface LocationResponseItem {
+          place_id: string;
+          display_name: string;
+          lat: string;
+          lon: string;
+        }
+
+        const formattedResults: LocationSuggestion[] = response.data.map((item: LocationResponseItem) => ({
           id: item.place_id,
           name: item.display_name,
           formattedName: item.display_name,
@@ -102,15 +109,14 @@ const TripFormComponent: React.FC = () => {
    
     switch (field) {
       case 'current':
-        setCurrentSearch(value);
+        // Removed unused setCurrentSearch call
         setCurrentLocation({ ...currentLocation, address: value, lat: undefined, lng: undefined });
         break;
       case 'pickup':
-        setPickupSearch(value);
         setPickupLocation({ ...pickupLocation, address: value, lat: undefined, lng: undefined });
         break;
       case 'dropoff':
-        setDropoffSearch(value);
+        // Removed unused setDropoffSearch call
         setDropoffLocation({ ...dropoffLocation, address: value, lat: undefined, lng: undefined });
         break;
     }
@@ -122,17 +128,17 @@ const TripFormComponent: React.FC = () => {
     switch (activeField) {
       case 'current':
         setCurrentLocation({ address: suggestion.formattedName, lat: suggestion.lat, lng: suggestion.lng });
-        setCurrentSearch('');
+        // Removed unused setCurrentSearch call
         form.setFieldsValue({ currentLat: suggestion.lat.toFixed(6), currentLng: suggestion.lng.toFixed(6) });
         break;
       case 'pickup':
         setPickupLocation({ address: suggestion.formattedName, lat: suggestion.lat, lng: suggestion.lng });
-        setPickupSearch('');
+        // Removed unused setPickupSearch call
         form.setFieldsValue({ pickupLat: suggestion.lat.toFixed(6), pickupLng: suggestion.lng.toFixed(6) });
         break;
       case 'dropoff':
         setDropoffLocation({ address: suggestion.formattedName, lat: suggestion.lat, lng: suggestion.lng });
-        setDropoffSearch('');
+        // Removed unused setDropoffSearch call
         form.setFieldsValue({ dropoffLat: suggestion.lat.toFixed(6), dropoffLng: suggestion.lng.toFixed(6) });
         break;
     }
@@ -186,7 +192,9 @@ const TripFormComponent: React.FC = () => {
       console.error('Error posting trip to backend:', error);
       notification.error({
         message: 'Save Error',
-        description: error.response?.data?.detail || 'Failed to save trip to backend. Please try again later.',
+        description: axios.isAxiosError(error) && error.response?.data?.detail 
+          ? error.response.data.detail 
+          : 'Failed to save trip to backend. Please try again later.',
         placement: 'topRight',
       });
     }

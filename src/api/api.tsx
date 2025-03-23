@@ -5,9 +5,29 @@ const api = axios.create({
   withCredentials: true,  // Send cookies for session authentication
 });
 
-export const register = (data) => api.post('register/', data);
-export const login = (data) => api.post('login/', data);
-export const createTrip = (data) => api.post('trips/', data);
+interface RegisterData {
+  // Define the expected structure of the data object
+  username: string;
+  password: string;
+  email?: string; // Optional field
+}
+
+export const register = (data: RegisterData) => api.post('register/', data);
+interface LoginData {
+  username: string;
+  password: string;
+}
+
+export const login = (data: LoginData) => api.post('login/', data);
+interface TripData {
+  // Define the expected structure of the data object
+  destination: string;
+  startDate: string;
+  endDate: string;
+  [key: string]: string | number | boolean; // Optional for additional fields
+}
+
+export const createTrip = (data: TripData) => api.post('trips/', data);
 export const getTrips = () => api.get('trips/');
 
 export default api;

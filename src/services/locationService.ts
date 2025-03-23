@@ -81,7 +81,7 @@ class LocationService {
             }
             
             // Map the response to our LocationResult interface
-            return (data.predictions || []).map((prediction: any) => ({
+            return (data.predictions || []).map((prediction: { place_id: string; description: string; structured_formatting: { main_text: string; secondary_text: string } }) => ({
                 id: prediction.place_id,
                 name: prediction.structured_formatting?.main_text || prediction.description,
                 formattedName: prediction.description,
