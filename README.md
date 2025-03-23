@@ -119,3 +119,5 @@ Usage
 2.  Enter trip details in the "Plan Your Trip" form.
     
 3.  View the route map and generated ELD logs on the results page.
+
+   [Screencast from 2025-03-23 09-59-01.webm](https://github.com/user-attachments/assets/b183f331-7873-43f3-a8ae-c8c0449ce9b8)
