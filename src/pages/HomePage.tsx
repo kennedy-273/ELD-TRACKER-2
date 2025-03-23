@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Card, Typography,  Form, Input, Row, Col, Space } from 'antd';
+import { Button, Card, Typography, Row, Col, Space } from 'antd';
 import { 
   TruckOutlined, EnvironmentOutlined, CalendarOutlined, ClockCircleOutlined, 
-  ArrowRightOutlined 
+ 
 } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Removed unused isModalOpen state
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [form] = Form.useForm();
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -22,10 +21,7 @@ const HomePage = () => {
 
   const isMobile = windowWidth < 768;
 
-  const handleFormSubmit = (values) => {
-    navigate('/trip-form', { state: values });
-    setIsModalOpen(false);
-  };
+  // Removed unused handleFormSubmit function
 
   return (
     <div style={{ fontFamily: "'Roboto', sans-serif", color: '#333', overflowX: 'hidden' }}>
@@ -254,11 +250,12 @@ const HomePage = () => {
             Join thousands of drivers and fleets trusting TruckLogger for seamless operations.
           </Text>
           <Button
+            type="primary"
             size="large"
-            onClick={() => setIsModalOpen(true)}
-            style={{ padding: '0 40px', height: 50, fontSize: 18, background: '#fff', color: '#1677ff', borderRadius: 6, boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}
+            onClick={() => navigate('/trip-form')}
+            style={{ padding: '0 32px' }}
           >
-            Get Started Now
+            Get Started
           </Button>
         </div>
       </section>
@@ -293,7 +290,7 @@ const HomePage = () => {
         </div>
       </footer>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }

@@ -7,7 +7,7 @@ import {
 import { 
   MenuOutlined, HomeOutlined, HistoryOutlined, PlusOutlined,
   UserOutlined, SettingOutlined, LogoutOutlined, TruckOutlined,
-  FileTextOutlined
+
 } from '@ant-design/icons';
 import MapComponent from '../components/MapComponent';
 import LogSheetComponent from '../components/LogSheetComponent';

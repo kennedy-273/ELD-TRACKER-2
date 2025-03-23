@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Typography, Table, Divider, Row, Col, Input, Form, Badge, Progress } from 'antd';
+import { Card, Typography, Table,  Row, Col, Input, Form, Badge, Progress } from 'antd';
 
 const { Title } = Typography;
 
@@ -10,7 +10,6 @@ interface LogSheetProps {
     dropoffLocation: string;
     currentCycle: string;
     currentCoordinates?: { lat: number; lng: number };
-    pickupCoordinates?: { lat: number; lng: number };
     dropoffCoordinates?: { lat: number; lng: number };
     totalDistance: number; // Now required, no default
     drivingTime: number;   // Now required, no default
@@ -32,13 +31,11 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
     dropoffLocation,
     currentCycle,
     currentCoordinates,
-    pickupCoordinates,
-    dropoffCoordinates,
     totalDistance,
     drivingTime,
   } = tripDetails;
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
   const [totalHours, setTotalHours] = useState({
     offDuty: 0,
@@ -80,8 +77,8 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
     }
 
     const entries: LogEntry[] = [];
-    let currentTime = 0;
-    let totalDrivingHours = 0;
+    // let currentTime = 0;
+    // Removed unused variable 'totalDrivingHours'
     let day = 1;
     let currentDayEntries: LogEntry[] = [];
 
@@ -94,7 +91,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: '',
       duration: offDutyDuration1,
     });
-    currentTime = 6;
+    // currentTime = 6;
 
     // Pre-trip inspection
     const preTripDuration = 1;
@@ -105,10 +102,10 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: currentLocation,
       duration: preTripDuration,
     });
-    currentTime = 7;
+    // currentTime = 7;
 
     // Driving to Pickup (assume proportional to total distance)
-    const distanceToPickup = totalDistance * 0.35; // 35% of total distance
+    // Removed unused variable 'distanceToPickup'
     const driveToPickupDuration = Math.min(5, drivingTime * 0.35); // Proportional time
     currentDayEntries.push({
       key: `${day}-3`,
@@ -117,8 +114,8 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: `${currentLocation} → ${pickupLocation}`,
       duration: driveToPickupDuration,
     });
-    currentTime = 12;
-    totalDrivingHours += driveToPickupDuration;
+    // currentTime = 12;
+    // Removed unused assignment to 'totalDrivingHours'
 
     // Pickup
     const pickupDuration = 1;
@@ -129,11 +126,11 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: pickupLocation,
       duration: pickupDuration,
     });
-    currentTime = 13;
+    // currentTime = 13;
 
     // Driving toward Dropoff
     let remainingDrivingHours = drivingTime - driveToPickupDuration;
-    let drivingSegment = Math.min(5, remainingDrivingHours);
+    const drivingSegment = Math.min(5, remainingDrivingHours);
     const driveToDropoff1Duration = drivingSegment;
     currentDayEntries.push({
       key: `${day}-5`,
@@ -142,8 +139,8 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: `${pickupLocation} → ${dropoffLocation}`,
       duration: driveToDropoff1Duration,
     });
-    currentTime = 18;
-    totalDrivingHours += driveToDropoff1Duration;
+    // currentTime = 18;
+    // Removed unused assignment to 'totalDrivingHours'
     remainingDrivingHours -= driveToDropoff1Duration;
 
     // Fueling stop
@@ -155,7 +152,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: 'Fueling Stop',
       duration: fuelingDuration,
     });
-    currentTime = 18.5;
+    // currentTime = 18.5;
 
     // Drive to reach 11-hour limit or remaining time
     const driveToDropoff2Duration = Math.min(1, remainingDrivingHours);
@@ -166,8 +163,8 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: `${pickupLocation} → ${dropoffLocation}`,
       duration: driveToDropoff2Duration,
     });
-    currentTime = 19.5;
-    totalDrivingHours += driveToDropoff2Duration;
+    // currentTime = 19.5;
+    // Removed unused assignment to 'totalDrivingHours'
     remainingDrivingHours -= driveToDropoff2Duration;
 
     // Mandatory 10-hour rest
@@ -194,7 +191,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: '',
       duration: sleeperBerth2Duration,
     });
-    currentTime = 5.5;
+    // currentTime = 5.5;
 
     // Pre-trip inspection
     const preTrip2Duration = 1;
@@ -205,7 +202,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: '',
       duration: preTrip2Duration,
     });
-    currentTime = 6.5;
+    // currentTime = 6.5;
 
     // Drive remaining hours
     const remainingDriveTime = Math.min(remainingDrivingHours, 3);
@@ -217,8 +214,8 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: `${pickupLocation} → ${dropoffLocation}`,
       duration: driveToDropoff3Duration,
     });
-    currentTime = 9.5;
-    totalDrivingHours += remainingDriveTime;
+    // currentTime = 9.5;
+    // Removed unused assignment to 'totalDrivingHours'
 
     // Drop-off
     const dropoffDuration = 1;
@@ -229,7 +226,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
       location: dropoffLocation,
       duration: dropoffDuration,
     });
-    currentTime = 10.5;
+    // Removed unused assignment to 'currentTime'
 
     // Off Duty for the rest of the day
     const offDutyDuration2 = 13.5;
@@ -417,7 +414,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
         </div>
       </Card>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse {
           0% { opacity: 0.6; }
           50% { opacity: 1; }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
-  Card, Typography, Row, Col, Divider, Button, Spin, Layout, Menu, Badge, Empty
+  Card, Typography, Row, Col, Button, Spin, Layout, Menu, Badge, Empty
 } from 'antd';
 import { 
   EnvironmentOutlined, ClockCircleOutlined, CarOutlined, TruckOutlined, 
@@ -10,7 +10,7 @@ import {
   UserOutlined, SettingOutlined, LogoutOutlined
 } from '@ant-design/icons';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, } from 'recharts';
 import './App.css';
 
 // Define TypeScript interfaces
@@ -102,10 +102,10 @@ const SavedTrips: React.FC = () => {
         center={[trip.current_lat, trip.current_lng]} 
         zoom={5} 
         style={{ height: '400px', width: '100%', borderRadius: '12px' }}
+        attributionControl={true}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <Marker position={[trip.current_lat, trip.current_lng]}>
           <Popup>Current: {trip.current_location}</Popup>
@@ -116,7 +116,7 @@ const SavedTrips: React.FC = () => {
         <Marker position={[trip.dropoff_lat, trip.dropoff_lng]}>
           <Popup>Dropoff: {trip.dropoff_location}</Popup>
         </Marker>
-        <Polyline positions={positions} color="#1677ff" />
+        <Polyline positions={positions} pathOptions={{ color: "#1677ff" }} />
       </MapContainer>
     );
   };

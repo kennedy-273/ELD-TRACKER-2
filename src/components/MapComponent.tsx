@@ -6,8 +6,7 @@ import axios from 'axios';
 import '../App.css';
 
 // Fix for Leaflet marker icons in React
-// @ts-ignore
-delete L.Icon.Default.prototype._getIconUrl;
+// Removed unnecessary deletion of _getIconUrl as it does not exist on L.Icon.Default
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -55,8 +54,8 @@ interface LocationSuggestion {
 
 const MapComponent: React.FC<MapComponentProps> = ({ route, stops }) => {
   // Set default center to a global view (centered over the Atlantic, showing most continents)
-  const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0]);
-  const [zoom, setZoom] = useState(2); // Low zoom level for a global view
+  const [mapCenter] = useState<[number, number]>([0, 0]);
+  const [zoom] = useState(2); // Low zoom level for a global view
   const [locations, setLocations] = useState<Location[]>([]);
   const [routePath, setRoutePath] = useState<[number, number][]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -128,7 +127,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ route, stops }) => {
                 minLng = 180,
                 maxLng = -180;
 
-              coords.forEach(([lat, lng]) => {
+              coords.forEach(([lat, lng]: [number, number]) => {
                 minLat = Math.min(minLat, lat);
                 maxLat = Math.max(maxLat, lat);
                 minLng = Math.min(minLng, lng);
@@ -210,9 +209,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ route, stops }) => {
         center={mapCenter}
         zoom={zoom}
         style={{ height: '100%', width: '100%' }}
-        whenReady={(map) => {
+        whenReady={() => {
           if (bounds) {
-            map.target.fitBounds(bounds);
+            const map = L.map(document.querySelector('.leaflet-container') as HTMLElement);
+            map.fitBounds(bounds);
           }
         }}
       >
@@ -285,7 +285,14 @@ export const LocationSearchComponent: React.FC<{
       );
 
       if (response.data) {
-        const formattedResults: LocationSuggestion[] = response.data.map((item: any) => ({
+        interface NominatimResult {
+          place_id: string;
+          display_name: string;
+          lat: string;
+          lon: string;
+        }
+
+        const formattedResults: LocationSuggestion[] = response.data.map((item: NominatimResult) => ({
           id: item.place_id,
           name: item.display_name,
           formattedName: item.display_name,
