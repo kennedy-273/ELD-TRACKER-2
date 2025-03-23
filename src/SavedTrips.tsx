@@ -45,7 +45,7 @@ const SavedTrips: React.FC = () => {
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/trips/');
+        const response = await axios.get('https://eld-back-dfyb.onrender.com/api/trips/');
         setTrips(response.data);
         
         // Automatically select the most recent trip

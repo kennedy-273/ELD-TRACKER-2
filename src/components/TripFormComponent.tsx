@@ -180,7 +180,7 @@ const TripFormComponent: React.FC = () => {
     };
   
     try {
-      await axios.post('http://127.0.0.1:8000/api/trips/', tripData, {
+      await axios.post('https://eld-back-dfyb.onrender.com/api/trips/', tripData, {
         headers: { 'Content-Type': 'application/json' },
       });
       notification.success({
