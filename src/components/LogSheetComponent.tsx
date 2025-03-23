@@ -10,9 +10,10 @@ interface LogSheetProps {
     dropoffLocation: string;
     currentCycle: string;
     currentCoordinates?: { lat: number; lng: number };
+    pickupCoordinates?: { lat: number; lng: number }; // Add this if missing
     dropoffCoordinates?: { lat: number; lng: number };
-    totalDistance: number; // Now required, no default
-    drivingTime: number;   // Now required, no default
+    totalDistance: number;
+    drivingTime: number;
   };
 }
 
@@ -396,7 +397,7 @@ const LogSheetComponent: React.FC<LogSheetProps> = ({ tripDetails }) => {
             pagination={false}
             size="small"
             style={{ marginTop: '20px' }}
-            rowClassName={(record, index) => index % 2 === 0 ? 'even-row' : 'odd-row'}
+            rowClassName={(_, index) => index % 2 === 0 ? 'even-row' : 'odd-row'}
           />
         </Card>
       ))}

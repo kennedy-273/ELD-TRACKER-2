@@ -29,7 +29,7 @@ interface TripDetails {
 const ResultsPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const tripDetails = location.state as TripDetails || {};
+  const tripDetails = React.useMemo(() => location.state as TripDetails || {}, [location.state]);
 
   const [routeDetails, setRouteDetails] = useState({
     totalDistance: 'Calculating...',
@@ -318,10 +318,10 @@ const ResultsPage: React.FC = () => {
                       dropoffLocation: tripDetails.dropoffLocation,
                       currentCycle: tripDetails.currentCycle || 'Not specified',
                       currentCoordinates: tripDetails.currentCoordinates,
-                      pickupCoordinates: tripDetails.pickupCoordinates,
+                      pickupCoordinates: tripDetails.pickupCoordinates, // Ensure this exists
                       dropoffCoordinates: tripDetails.dropoffCoordinates,
-                      totalDistance: numericRouteDetails.totalDistance,
-                      drivingTime: numericRouteDetails.drivingTime,
+                      totalDistance: numericRouteDetails.totalDistance, // Ensure this exists
+                      drivingTime: numericRouteDetails.drivingTime,     // Ensure this exists
                     }}
                   />
                 )}
